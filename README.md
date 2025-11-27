@@ -73,20 +73,6 @@ apt install apache2 php php-cli php-common libapache2-mod-php</code></pre>
 
 <h2>Installation des Scripts</h2>
 
-<ul>
-    <li>Déplacez les scripts <code>.sh</code> dans le répertoire <code>/usr/bin/</code> :</li>
-    <pre><code>mv script.sh /usr/bin/</code></pre>
-
-    <li>Déplacez les fichiers <code>.service</code> dans <code>/etc/systemd/system/</code> :</li>
-    <pre><code>mv script.service /etc/systemd/system/</code></pre>
-
-    <li>Rechargez <code>systemd</code> pour qu'il prenne en compte les nouveaux fichiers de service :</li>
-    <pre><code>systemctl daemon-reload</code></pre>
-
-    <li>Appliquez les droits d'exécution pour l'utilisateur <code>www-data</code> sur les scripts :</li>
-    <pre><code>chmod +x /usr/bin/nom_du_script</code></pre>
-</ul>
-
 <h2>Informations importantes</h2>
 <p>Ce tableau de bord est compatible avec les configurations suivantes :</p>
 <ul>
