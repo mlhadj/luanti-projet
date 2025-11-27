@@ -1,88 +1,54 @@
-Dashboard LXC / Minetest Debian
-📋 Présentation
-
-Ce dépôt explique comment installer des serveurs Minetest sur des conteneurs LXC ainsi qu'un dashboard interactif pour les gérer.
-Installation de Minetest
+🚀 Minetest + LXC Dashboard – Quick Setup
+📦 Installation de Minetest (dans chaque conteneur LXC)
 Prérequis
+✅ Conteneurs LXC configurés (IP, réseau)
+✅ Debian/Ubuntu installé
+Commandes
 
-    Conteneurs LXC configurés (adresses IP, etc.)
-    Debian/Ubuntu sur les conteneurs
+# Mise à jour & installation
+apt update
+apt install minetest-server
 
-Installation
+# Configuration
+mv minetest.conf world.mt /etc/minetest/
+chown -R Debian-minetest:games /etc/minetest
 
-    Installez le serveur Minetest via APT :
+# Redémarrage
+systemctl restart minetest-server
 
-   apt update
-   apt install minetest-server
 
-    Déplacez les fichiers de configuration de chaque map dans /etc/minetest/ :
-        minetest.conf
-        world.mt
-
-    Définissez les permissions appropriées :
-
-   chown -R Debian-minetest:games /etc/minetest
-
-    Redémarrez le service :
-
-   systemctl restart minetest-server
-
-Configuration du DNAT
-
-Pour rendre chaque map accessible depuis l'extérieur, configurez des règles DNAT sur votre serveur principal vers chaque conteneur :
+🌍 Configuration DNAT (sur l’hôte)
 
 iptables -A PREROUTING -t nat -p udp -m udp --dport 30000 -j DNAT --to-destination 10.0.3.10:30000
 
-    Note : Adaptez le port et l'adresse IP selon votre configuration.
+Remplace 10.0.3.10 et 30000 par tes valeurs.
 
-Installation du Dashboard
-1. Installation d'Apache et PHP
-
-Sur votre serveur principal, installez les dépendances nécessaires :
+🖥️ Installation du Dashboard (sur l’hôte)
+1. Apache + PHP
 
 apt update
 apt install apache2 php php-cli php-common libapache2-mod-php
 
-2. Configuration du Dashboard
+2. Configuration
 
-    Créez le dossier pour le dashboard :
+mkdir -p /var/www/minetest
+mv index.php /var/www/minetest/
+chown -R www-data:www-data /var/www/minetest
+systemctl restart apache2
 
-   mkdir -p /var/www/minetest
+3. Apache : DocumentRoot
+Édite /etc/apache2/sites-available/000-default.conf :
 
-    Déplacez le fichier index.php dans /var/www/minetest
+DocumentRoot /var/www/minetest
 
-    Modifiez la configuration Apache dans /etc/apache2/sites-available/000-default.conf :
+Puis :
 
-   DocumentRoot /var/www/minetest
+systemctl restart apache2
 
-    Définissez les permissions :
 
-   chown -R www-data:www-data /var/www/minetest
+⚙️ Scripts & Services
 
-    Redémarrez Apache :
-
-   systemctl restart apache2
-
-3. Personnalisation
-
-Modifiez le fichier index.php selon vos besoins.
-Aperçu
-Dashboard - Vue principale Dashboard - Vue détaillée
-Installation des Scripts
-
-    Déplacez les scripts .sh dans /usr/bin/
-    Déplacez les fichiers .service dans /etc/systemd/system/
-    Rechargez systemd :
-
-   systemctl daemon-reload
-
-    Appliquez les droits d'exécution pour l'utilisateur www-data
-
-Informations importantes
-
-Ce dashboard est pleinement compatible avec les distributions disposant de :
-
-    LXC (Linux Containers)
-    Apache2
-    PHP
-
+mv *.sh /usr/bin/
+mv *.service /etc/systemd/system/
+chmod +x /usr/bin/*.sh
+systemctl daemon-reload
