@@ -71,8 +71,6 @@ apt install apache2 php php-cli php-common libapache2-mod-php</code></pre>
 <h3>3. Personnalisation du Dashboard</h3>
 <p>Modifiez les fichiers <code>index.php</code> et <code>index.html</code> selon vos préférences pour personnaliser l'apparence et la fonctionnalité du tableau de bord.</p>
 
-<h2>Installation des Scripts</h2>
-
 <h2>Informations importantes</h2>
 <p>Ce tableau de bord est compatible avec les configurations suivantes :</p>
 <ul>
